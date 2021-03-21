@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
+    <script>
+        let app;
+        let body;
+        let pimg;
+        let eyelid;
+        let eyelidSheet = {};
+        let pb;
+        let Psheet = {};
+        let collage;
+        let Csheet = {};
+        let bg0;
+        let bg1;
+        let bg2;
+        let bg3;
+        let bg4;
+        let bg5;
+        let bg6;
+        let bg7;
+        let bg8;
+        let border;
+
+        let bgX = 0;
+        let bgSpeed = 1;
+
+
+
+
+
+
+
+    
+
+
+        window.onload = function() {
+            app = new PIXI.Application({
+                width: 1242,
+                height: 603,
+                backgroundColor: 0xFFFFFF
+            });
+            
+            var renderer = PIXI.autoDetectRenderer({
+                width: 1242,
+                height: 603,
+                
+                transparent: true
+                
+               
+            });
+
+
+            var renderer1 = PIXI.autoDetectRenderer({
+                width: 1242,
+                height: 603,
+                transparent: true
+                
+                
+               
+            });
+
+            var renderer2 = PIXI.autoDetectRenderer({
+                width: 1242,
+                height: 603,
+                transparent: true
+
+
+                
+                
+                
+               
+            });
+
+            var rendererL = PIXI.autoDetectRenderer({
+              width: 1242,
+              height: 603,
+              transparent: true
+
+
+            })
+
+
+            var rendererB = PIXI.autoDetectRenderer({
+              width: 1242,
+              height: 603,
+              transparent: true
+
+
+            })
+
+
+            var rendererT = PIXI.autoDetectRenderer({
+              width: 1242,
+              height: 603,
+              transparent: true
+
+
+            })
+
+            var rendererBorder = PIXI.autoDetectRenderer({
+              width: 1500,
+              height: 850,
+              
+
+
+            })
+
+            var rendererUploadScreen = PIXI.autoDetectRenderer({
+              width: 1242,
+              height: 603,
+              transparent: true
+
+
+            })
+
+            var stageBorder = new PIXI.Container();
+            var stage2 = new PIXI.Container();
+            var stage1 = new PIXI.Container();
+            var stage = new PIXI.Container();
+            var stageL = new PIXI.Container();
+            var stageB = new PIXI.Container();
+            var stageT = new PIXI.Container();
+
+            let UploadScreen = new PIXI.Container();
+            
+            let ScreenContainer = new PIXI.Container();
+                UploadScreen.addChild(ScreenContainer);
+            
+            
+       
+                
+            
+           
+             
+
+
+
+
+
+            var LidContainer = new PIXI.Container();
+            stageL.addChild(LidContainer);
+
+            var pupilContainer = new PIXI.Container();
+            stage1.addChild(pupilContainer);
+
+            var BContainer = new PIXI.Container();
+            stageB.addChild(BContainer);
+
+            var TContainer = new PIXI.Container();
+            stageT.addChild(TContainer);
+            
+            var BorderContainer = new PIXI.Container();
+            stageBorder.addChild(BorderContainer);
+         
+            function createBorder(){
+                
+                border = new PIXI.TilingSprite.from("limetile.png",2000, 1289 );
+
+                
+                border.position.set(0,0);
+                BorderContainer.addChild(border);
+
+                return border;
+            }
+
+
+
+            function createP(){
+          pimg = new PIXI.Sprite.from("pupil1.png");
+          pimg.anchor.set(.5, 0.9);
+          pimg.position.x = 890;
+          pimg.position.y = 300;
+          pupilContainer.addChild(pimg);
+            }
+        
+
+         
+        function CreateMB() {   
+        img = new PIXI.Sprite.from("MB1.png");
+        
+        img.width.x = 1242;
+        img.height.y = 603;
+        img.anchor.set(.5, 0.9);
+        img.position.x = 750;
+        img.position.y = 570;
+        
+        
+        stage.addChild(img);
+
+        depthMap = new PIXI.Sprite.from("BW.png");
+
+        depthMap.width.x = 1242;
+        depthMap.height.y = 603;
+        depthMap.anchor.set(.5, 0.9);
+        depthMap.position.x = 750;
+        depthMap.position.y = 570;
+
+        stage.addChild(depthMap);
+        }
+
+        function Dis(){
+        displacementFilter = new PIXI.filters.DisplacementFilter(depthMap);
+        stage.filters = [displacementFilter];
+
+        window.onmousemove = function(e) {
+        displacementFilter.scale.x = (window.innerWidth / 7 - e.clientX) /70;
+        displacementFilter.scale.y = (window.innerHeight / 6 - e.clientY) /60;
+        }
+          };
+
+
+         
+
+      
+        function rotateToPoint(mx, my, px, py){  
+          var self = this;
+          var dist_Y = my - py;
+          var dist_X = mx - px;
+          var angle = Math.atan2(dist_Y,dist_X);
+          var degrees = angle * 360/ Math.PI;
+          return angle;
+            }
+
+
+            function createEyelidSheet() {
+         let  ssheet = new PIXI.BaseTexture.from("eyelid_spritesheet.png");
+         let w = 1229;
+         let h = 691;
+            
+         eyelidSheet["blink"] = [
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle()),
+            
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+           
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+           
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+           
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+           
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(5 * w, 0, w, h)),
+            
+            new PIXI.Texture( ssheet, new PIXI.Rectangle(5 * w, 0, w, h))
+        ];
+
+        } 
+
+        function createEyelid() {
+         eyelid = new PIXI.AnimatedSprite(eyelidSheet.blink);
+         eyelid.anchor.set(0.5);
+         eyelid.animationspeed = .5;
+         eyelid.loop = true;
+         eyelid.x = 670;
+         eyelid.y = 355; 
+         stageL.addChild(eyelid);
+         eyelid.play();
+
+        return eyelid;
+        }
+
+        function createCollagesheet() {
+         let  Collagesheet = new PIXI.BaseTexture.from("collage_spritemap.png");
+         
+         let w = 649;
+         let h = 480;
+            
+         Csheet["flash"] = [
+            
+         
+           
+
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+
+            
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+        
+            
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+
+            
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+        
+            
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+        
+            
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Collagesheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+        
+        
+
+          
+           
+    
+            ];
+
+            
+            }
+
+       function createPBsheet() {
+        let  Buttonsheet = new PIXI.BaseTexture.from("purplebutton_spritemap.png");
+         
+        let w = 489.25;
+         let h = 450;
+            
+         Psheet["blink1"] = [
+            
+         
+         
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            
+
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            ];
+
+            Psheet["click"] = [
+
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(5 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(5 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(5 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(5 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(5 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(5 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(5 * w, 0, w, h)),
+
+          
+            
+            ];
+
+
+            Psheet["over"] = [
+
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            
+            
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            ];
+            }
+
+            //maybe createPB does it all screen and button
+    function createPB() {
+            pb = new PIXI.AnimatedSprite(Psheet.blink1);
+            collage = new PIXI.AnimatedSprite(Csheet.flash);
+            collage.scale.y = 0.75;
+            collage.scale.x = 0.75;
+            collage.renderable =  false;
+            collage.x = 1000;
+            collage.y = 480;
+            let Display = true; 
+            let Hide = false;
+            let uploadScreenBg = new PIXI.Sprite.from("spacebg.png");
+           
+      
+
+
+            uploadScreenBg.renderable=false; 
+            let UploadButton = new PIXI.Sprite.from("upload_button.png")
+            let UploadButtonHighlight = new PIXI.Sprite.from("upload_button_highlight.png")
+            let UploadButtonSelect = new PIXI.Sprite.from("upload_button_selected.png")
+            UploadButton.renderable = false;
+            UploadButtonHighlight.renderable = false; 
+            UploadButtonSelect.renderable = false;  
+            UploadButton.x = 500;
+            UploadButton.y = 55;
+            UploadButtonHighlight.x = 500;
+            UploadButtonHighlight.y = 55;
+            UploadButtonSelect.x = 500;
+            UploadButtonSelect.y = 55;
+
+
+            
+            pb.anchor.set(0.5);
+            collage.anchor.set(0.5);
+            
+            pb.animationspeed = 6.75;
+            collage.animationspeed = 1;
+         
+            pb.loop = true;
+            collage.loop = true;
+            
+           
+            
+            pb.x = 260;
+            pb.y = 355;
+          
+            
+            stageB.addChild(uploadScreenBg);
+            stageB.addChild(UploadButtonSelect);
+            stageB.addChild(UploadButtonHighlight);
+            stageB.addChild(UploadButton);
+            stageB.addChild(collage);
+            stageB.addChild(pb);
+            
+
+           
+            pb.play();
+            collage.play();
+           
+            pb.interactive = true;
+            collage.interactive = true;
+            uploadScreenBg.interactive = false;
+            
+            pb.buttonMode = true;
+            
+            UploadButton.interactive = false;
+            UploadButtonHighlight.interactive = false;
+            UploadButtonSelect.interactive = false;
+
+
+            UploadButton.buttonMode = true;
+            UploadButtonHighlight.buttonMode = true;
+            UploadButtonSelect.buttonMode = true;
+            
+                
+                pb.play();
+            
+            pb.on('mousedown', function (e) {
+
+              
+
+                pb.textures = Psheet.click;
+                pb.loop = false;
+                
+
+                if (uploadScreenBg.renderable == Hide ){
+                    
+                    uploadScreenBg.renderable = true;
+                    UploadButton.renderable = true;
+                    collage.renderable = true; 
+
+                    UploadButton.interactive = true;
+                    UploadButtonHighlight.interactive = true;
+                    UploadButtonSelect.interactive = true;
+                   
+                    
+                }
+                else if (uploadScreenBg.renderable == Display ) {
+
+                    uploadScreenBg.renderable = false;
+                    UploadButton.renderable=false;
+                    UploadButtonHighlight.renderable= false; 
+                    collage.renderable =  false;
+
+                    UploadButton.interactive = false;
+                    UploadButtonHighlight.interactive = false;
+                    UploadButtonSelect.interactive = false;
+
+
+                }
+              
+                
+                pb.play();
+            pb.on('mouseup', function (e) {
+                
+                pb.textures = Psheet.blink1;
+                pb.loop = true;
+               
+                
+                pb.play();
+            });
+
+             
+            
+
+
+
+
+            });
+
+
+
+
+
+            UploadButton.on('mousedown', function (e) {
+                
+
+                UploadButton.renderable = false;
+                UploadButtonHighlight.renderable = false;
+                UploadButtonSelect.renderable = true;
+               
+               
+                
+                
+            });
+
+            UploadButton.on('mouseup', function (e) {
+                
+
+                UploadButton.renderable = false;
+                UploadButtonHighlight.renderable = true;
+               
+                UploadButtonSelect.renderable = false;
+               
+               
+                
+                
+            });
+
+
+
+
+
+            UploadButton.hitArea = new PIXI.Rectangle(10, 10, 929, 1425);
+            
+            UploadButton.mouseover = function(e) {
+
+                if (uploadScreenBg.renderable == Display){
+                    UploadButtonHighlight.renderable= true; 
+                    UploadButton.renderable= false; 
+                }
+           
+           
+           
+
+        
+            }
+
+            // make circle half-transparent when mouse leaves
+            UploadButton.mouseout = function(e) {
+            
+                if (uploadScreenBg.renderable == Display){
+                    UploadButtonHighlight.renderable= false; 
+                    UploadButton.renderable= true; 
+                }
+           
+           
+
+            return pb;
+            
+            }
+        
+        }
+
+
+
+           
+        function animateP() {  
+        requestAnimationFrame(animateP);
+    
+        // just for fun, let's rotate mr rabbit a little
+        pimg.position.x = 900;
+        pimg.position.y = 290;
+      
+        pimg.rotation = rotateToPoint(renderer1.plugins.interaction.mouse.global.x, renderer1.plugins.interaction.mouse.global.y, pimg.position.x, pimg.position.y);
+        
+        }
+    
+        // render the container
+     
+
+
+
+
+          createBorder()
+
+
+          CreateMB();
+          
+          Dis();
+          createP();
+          animateP();  
+          
+          
+          createEyelidSheet();
+          createEyelid();
+          
+          createCollagesheet()
+          createPBsheet();
+          createPB();
+
+      
+         
+         
+         
+         
+         
+  
+
+          
+          
+          
+
+          
+
+           
+    
+          
+          
+      
+            
+        
+
+            
+       
+       
+     
+       
+
+
+
+       
+        
+    
+    /*////////////////////////////////////////*/
+    
+    var snakeContainer = new PIXI.Container();
+
+    stage2.addChild(snakeContainer);
+    
+    /*////////////////////////////////////////*/
+
+
+    var TContainer = new PIXI.Container();
+    TContainer.scale.set( rendererT.width / rendererT.height  );
+    TContainer.position.x = 200;
+    TContainer.position.y = 0;
+    stageT.addChild(TContainer);
+    
+    // build a rope!
+    var pointCount = 25;
+    var ropeLength = 1000 / pointCount;
+    var points = [];
+    
+    for (var i = 0; i < pointCount; i++) {
+      //let ease = easein( i / pointCount );
+      let point = new PIXI.Point( i * ropeLength, 0)
+      points.push(point);
+    }
+    
+    var loader = new PIXI.Loader();
+    loader.add('worm','tentacle.png');
+    loader.add('MB1', 'MB1.png');
+   
+
+   
+
+    function onAssetsLoaded(loader, sprites){
+      var strip = new PIXI.SimpleRope(sprites.worm.texture, points);
+      strip.x = -400;
+      strip.y = 100
+      strip.angle = 10;
+      strip.acceleration = new PIXI.Point(0);
+      strip.mass = 25;
+
+      TContainer.addChild(strip);
+
+      // Options for how objects interact
+// How fast the red square moves
+const movementSpeed = 0.05;
+
+// Strength of the impulse push between two objects
+const impulsePower = .25;
+
+// Test For Hit
+// A basic AABB check between two different squares
+function testForAABB(object1, object2, object3, object4, object5, object6, object7) {
+    const bounds1 = object1.getBounds();
+    const bounds2 = object2.getBounds();
+    const bounds3 = object3.getBounds();
+    const bounds4 = object4.getBounds();
+    const bounds5 = object5.getBounds();
+    const bounds6 = object6.getBounds();
+    const bounds7 = object7.getBounds();
+
+    return bounds1.x < bounds2.x + bounds2.width
+        && bounds1.x + bounds1.width > bounds2.x
+        && bounds1.y < bounds2.y + bounds2.height
+        && bounds1.y + bounds1.height > bounds2.y;
+    return bounds1.x < bounds3.x + bounds3.width
+        && bounds1.x + bounds1.width > bounds3.x
+        && bounds1.y < bounds3.y + bounds3.height
+        && bounds1.y + bounds3.height > bounds3.y;
+    return bounds1.x < bounds4.x + bounds4.width
+        && bounds1.x + bounds1.width > bounds4.x
+        && bounds1.y < bounds4.y + bounds4.height
+        && bounds1.y + bounds1.height > bounds4.y;
+    return bounds1.x < bounds5.x + bounds5.width
+        && bounds1.x + bounds1.width > bounds5.x
+        && bounds1.y < bounds5.y + bounds3.height
+        && bounds1.y + bounds5.height > bounds5.y;
+    return bounds1.x < bounds6.x + bounds6.width
+        && bounds1.x + bounds6.width > bounds6.x
+        && bounds1.y < bounds6.y + bounds6.height
+        && bounds1.y + bounds6.height > bounds6.y;    
+    return bounds1.x < bounds7.x + bounds7.width
+        && bounds1.x + bounds7.width > bounds7.x
+        && bounds1.y < bounds7.y + bounds7.height
+        && bounds1.y + bounds7.height > bounds7.y;
+
+        
+}
+
+// Calculates the results of a collision, allowing us to give an impulse that
+// shoves objects apart
+function collisionResponse(object1, object2, object3, object4, object5, object6, object7) {
+    if (!object1 || !object2) {
+        return new PIXI.Point(0);
+    }
+
+    if (!object1 || !object3) {
+        return new PIXI.Point(0);
+    }
+
+    if (!object1 || !object4) {
+        return new PIXI.Point(0);
+    }
+
+    if (!object1 || !object5) {
+        return new PIXI.Point(0);
+    }
+
+    if (!object1 || !object6) {
+        return new PIXI.Point(0);
+    }
+
+    if (!object1 || !object7) {
+        return new PIXI.Point(0);
+    }
+
+  
+
+    const vCollision = new PIXI.Point(
+        object2.x - object1.x,
+        object2.y - object1.y,
+
+        object3.x - object1.x,
+        object3.y - object1.y,
+
+        object4.x - object1.x,
+        object4.y - object1.y,
+
+        object5.x - object1.x,
+        object5.y - object1.y,
+
+        object6.x - object1.x,
+        object6.y - object1.y,
+
+        object7.x - object1.x,
+        object7.y - object1.y,
+
+   
+
+
+    );
+
+    const distance = Math.sqrt(
+        (object2.x - object1.x) * (object2.x - object1.x)
+        + (object2.y - object1.y) * (object2.y - object1.y),
+
+        (object3.x - object1.x) * (object3.x - object1.x)
+        + (object3.y - object1.y) * (object3.y - object1.y),
+
+        (object4.x - object1.x) * (object4.x - object1.x)
+        + (object4.y - object1.y) * (object4.y - object1.y),
+
+        (object5.x - object1.x) * (object5.x - object1.x)
+        + (object5.y - object1.y) * (object5.y - object1.y),
+
+        (object6.x - object1.x) * (object6.x - object1.x)
+        + (object6.y - object1.y) * (object6.y - object1.y),
+
+        (object7.x - object1.x) * (object7.x - object1.x)
+        + (object7.y - object1.y) * (object7.y - object1.y),
+
+
+    );
+
+    const vCollisionNorm = new PIXI.Point(
+        vCollision.x / distance,
+        vCollision.y / distance,
+    );
+
+    const vRelativeVelocity = new PIXI.Point(
+        object1.acceleration.x - object2.acceleration.x,
+        object1.acceleration.y - object2.acceleration.y,
+
+        object1.acceleration.x - object3.acceleration.x,
+        object1.acceleration.y - object3.acceleration.y,
+
+        object1.acceleration.x - object4.acceleration.x,
+        object1.acceleration.y - object4.acceleration.y,
+
+
+        object1.acceleration.x - object5.acceleration.x,
+        object1.acceleration.y - object5.acceleration.y,
+
+
+        object1.acceleration.x - object6.acceleration.x,
+        object1.acceleration.y - object6.acceleration.y,
+
+        object1.acceleration.x - object7.acceleration.x,
+        object1.acceleration.y - object7.acceleration.y,
+
+
+
+
+        
+    );
+
+    const speed = vRelativeVelocity.x * vCollisionNorm.x
+        + vRelativeVelocity.y * vCollisionNorm.y;
+
+    const impulse = impulsePower * speed / (object1.mass + object2.mass);
+
+    const impulse1 = impulsePower * speed / (object1.mass + object2.mass);
+
+    const impulse2 = impulsePower * speed / (object1.mass + object2.mass);
+
+    const impulse3 = impulsePower * speed / (object1.mass + object2.mass);
+
+    const impulse4 = impulsePower * speed / (object1.mass + object2.mass);
+
+    const impulse5 = impulsePower * speed / (object1.mass + object2.mass);
+
+    const impulse6 = impulsePower * speed / (object1.mass + object2.mass);
+
+    const impulse7 = impulsePower * speed / (object1.mass + object2.mass);
+
+    return new PIXI.Point(
+        impulse * vCollisionNorm.x,
+        impulse * vCollisionNorm.y,
+
+        impulse1 * vCollisionNorm.x,
+        impulse1 * vCollisionNorm.y,
+
+        impulse2 * vCollisionNorm.x,
+        impulse2 * vCollisionNorm.y,
+
+        impulse3 * vCollisionNorm.x,
+        impulse3 * vCollisionNorm.y,
+
+        impulse4 * vCollisionNorm.x,
+        impulse4 * vCollisionNorm.y,
+
+        impulse5 * vCollisionNorm.x,
+        impulse5 * vCollisionNorm.y,
+
+        impulse6 * vCollisionNorm.x,
+        impulse6 * vCollisionNorm.y,
+
+       
+    );
+}
+
+// Calculate the distance between two given points
+function distanceBetweenTwoPoints(p1, p2,) {
+    const a = p1.x - p2.x;
+    const b = p1.y - p2.y;
+
+    return Math.hypot(a, b);
+}
+
+
+
+
+
+
+
+
+
+
+// Listen for animate update
+app.ticker.add((delta) => {
+    // Applied deacceleration for both squares, done by reducing the
+    // acceleration by 0.01% of the acceleration every loop
+    redSquare.acceleration.set(redSquare.acceleration.x * 0.99, redSquare.acceleration.y * 0.99);
+    greenblob.acceleration.set(greenblob.acceleration.x * 0.99, greenblob.acceleration.y * 0.99);
+    purple.acceleration.set(purple.acceleration.x * 0.99, purple.acceleration.y * 0.99);
+    orange.acceleration.set(orange.acceleration.x * 0.99, orange.acceleration.y * 0.99);
+    dblublob.acceleration.set(dblublob.acceleration.x * 0.99, dblublob.acceleration.y * 0.99);
+    yellow.acceleration.set(yellow.acceleration.x * 0.99, yellow.acceleration.y * 0.99);
+    blue.acceleration.set(blue.acceleration.x * 0.99, blue.acceleration.y * 0.99);
+    pink.acceleration.set(pink.acceleration.x * 0.99, pink.acceleration.y * 0.99);
+
+    strip.acceleration.set(strip.acceleration.x * 0.99, strip.acceleration.y * 0.99);
+
+
+    const mouseCoords = app.renderer.plugins.interaction.mouse.global;
+    
+    if (pink.x < 0 ||pink.x > (app.screen.width - 100)) {
+        pink.acceleration.x = -pink.acceleration.x;
+    }
+
+    if (pink.y < 0 || pink.y > (app.screen.height - 100)) {
+        pink.acceleration.y = -pink.acceleration.y;
+    }
+
+    if ((pink.x < -30 || pink.x > (app.screen.width + 30))
+        || pink.y < -30 || pink.y > (app.screen.height + 30)) {
+            pink.position.set((app.screen.width - 100) / 2, (app.screen.height - 100) / 2);
+    }
+
+
+
+    if (blue.x < 0 ||blue.x > (app.screen.width - 100)) {
+        blue.acceleration.x = -blue.acceleration.x;
+    }
+
+    if (blue.y < 0 || blue.y > (app.screen.height - 100)) {
+        blue.acceleration.y = -blue.acceleration.y;
+    }
+
+    if ((blue.x < -30 || blue.x > (app.screen.width + 30))
+        || blue.y < -30 || blue.y > (app.screen.height + 30)) {
+            blue.position.set((app.screen.width - 100) / 2, (app.screen.height - 100) / 2);
+    }
+
+    if (yellow.x < 0 ||yellow.x > (app.screen.width - 100)) {
+        yellow.acceleration.x = -yellow.acceleration.x;
+    }
+
+    if (yellow.y < 0 || yellow.y > (app.screen.height - 100)) {
+        yellow.acceleration.y = -yellow.acceleration.y;
+    }
+
+    if ((yellow.x < -30 || yellow.x > (app.screen.width + 30))
+        || yellow.y < -30 || yellow.y > (app.screen.height + 30)) {
+            yellow.position.set((app.screen.width - 100) / 2, (app.screen.height - 100) / 2);
+    }
+
+    if (orange.x < 0 ||orange.x > (app.screen.width - 100)) {
+        orange.acceleration.x = -orange.acceleration.x;
+    }
+
+    if (orange.y < 0 || orange.y > (app.screen.height - 100)) {
+        orange.acceleration.y = -orange.acceleration.y;
+    }
+
+    if ((orange.x < -30 || orange.x > (app.screen.width + 30))
+        || orange.y < -30 || orange.y > (app.screen.height + 30)) {
+            orange.position.set((app.screen.width - 100) / 2, (app.screen.height - 100) / 2);
+    }
+
+    if (greenblob.x < 0 || greenblob.x > (app.screen.width - 100)) {
+        greenblob.acceleration.x = -greenblob.acceleration.x;
+    }
+
+    if (greenblob.y < 0 || greenblob.y > (app.screen.height - 100)) {
+        greenblob.acceleration.y = -greenblob.acceleration.y;
+    }
+
+    if ((greenblob.x < -30 || greenblob.x > (app.screen.width + 30))
+        || greenblob.y < -30 || greenblob.y > (app.screen.height + 30)) {
+        greenblob.position.set((app.screen.width - 100) / 2, (app.screen.height - 100) / 2);
+    }
+
+    if (purple.x < 0 || purple.x > (app.screen.width - 100)) {
+        purple.acceleration.x = -purple.acceleration.x;
+    }
+
+    if (purple.y < 0 ||purple.y > (app.screen.height - 100)) {
+        purple.acceleration.y = -purple.acceleration.y;
+    }
+    
+    if ((purple.x < -30 ||purple.x > (app.screen.width + 30))
+        || purple.y < -30 || purple.y > (app.screen.height + 30)) {
+        purple.position.set((app.screen.width - 100) / 2, (app.screen.height - 100) / 2);
+    }
+
+
+    if (dblublob.x < 0 || dblublob.x > (app.screen.width - 100)) {
+        dblublob.acceleration.x = -dblublob.acceleration.x;
+    }
+
+    if (dblublob.y < 0 ||dblublob.y > (app.screen.height - 100)) {
+        dblublob.acceleration.y = -dblublob.acceleration.y;
+    }
+    
+    if ((dblublob.x < -30 ||dblublob.x > (app.screen.width + 30))
+        || dblublob.y < -30 || dblublob.y > (app.screen.height + 30)) {
+            dblublob.position.set((app.screen.width - 100) / 2, (app.screen.height - 100) / 2);
+    }
+
+
+    
+
+    if (app.screen.width > mouseCoords.x || mouseCoords.x > 0
+        || app.screen.height > mouseCoords.y || mouseCoords.y > 0) {
+        // Get the red square's center point
+        const purpleCenterPosition = new PIXI.Point(
+            purple.x + (purple.width * 0.5),
+            purple.y + (purple.height * 0.5),
+        );
+
+
+    // If the mouse is off screen, then don't update any further
+    if (app.screen.width > mouseCoords.x || mouseCoords.x > 0
+        ||app.screen.height > mouseCoords.y || mouseCoords.y > 0) {
+        // Get the red square's center point
+        const redSquareCenterPosition = new PIXI.Point(
+            redSquare.x + (redSquare.width ),
+            redSquare.y + (redSquare.height),
+        );
+
+        // Calculate the direction vector between the mouse pointer and
+        // the red square
+        const toMouseDirection = new PIXI.Point(
+            mouseCoords.x - redSquareCenterPosition.x,
+            mouseCoords.y - redSquareCenterPosition.y,
+        );
+
+        // Use the above to figure out the angle that direction has
+        const angleToMouse = Math.atan2(
+            toMouseDirection.y,
+            toMouseDirection.x,
+        );
+
+        // Figure out the speed the square should be travelling by, as a
+        // function of how far away from the mouse pointer the red square is
+        const distMouseRedSquare = distanceBetweenTwoPoints(
+            mouseCoords,
+            redSquareCenterPosition,
+        );
+
+        const distMousePurpleSquare = distanceBetweenTwoPoints(
+            mouseCoords,
+            purpleCenterPosition,
+        );
+
+        const redSpeed = distMouseRedSquare * movementSpeed;
+
+        const purpleSpeed = distMousePurpleSquare * movementSpeed;
+
+        
+
+        // Calculate the acceleration of the red square
+        redSquare.acceleration.set(
+            Math.cos(angleToMouse) * redSpeed,
+            Math.sin(angleToMouse) * redSpeed,
+        );
+        
+    }
+
+     
+    
+
+    
+  
+
+    // If the two squares are colliding
+    if (testForAABB(strip, greenblob, redSquare,purple, dblublob, orange, yellow, blue, pink)) {
+        // Calculate the changes in acceleration that should be made between
+        // each square as a result of the collision
+        const collisionPush = collisionResponse(strip, redSquare,purple, greenblob, dblublob, orange, yellow, blue, pink);
+        // Set the changes in acceleration for both squares
+        redSquare.acceleration.set(
+            (collisionPush.x * strip.mass),
+            (collisionPush.y * strip.mass),
+        );
+        strip.acceleration.set(
+            -(collisionPush.x * redSquare.mass),
+            -(collisionPush.y * redSquare.mass),
+            -(collisionPush.x * greenblob.mass),
+            -(collisionPush.y * greenblob.mass),
+            -(collisionPush.x * purple.mass),
+            -(collisionPush.y * purple.mass),
+            -(collisionPush.x * dblublob.mass),
+            -(collisionPush.y * dblublob.mass),
+            -(collisionPush.x * yellow.mass),
+            -(collisionPush.y * yellow.mass),
+            -(collisionPush.x * blue.mass),
+            -(collisionPush.y * blue.mass),
+            -(collisionPush.x * pink.mass),
+            -(collisionPush.y * pink.mass),
+        );
+
+        yellow.acceleration.set(
+            -(collisionPush.x * strip.mass),
+            -(collisionPush.y * strip.mass),
+        );
+
+        blue.acceleration.set(
+            -(collisionPush.x * strip.mass),
+            -(collisionPush.y * strip.mass),
+        );
+        pink.acceleration.set(
+            -(collisionPush.x * strip.mass),
+            -(collisionPush.y * strip.mass),
+        );
+
+        orange.acceleration.set(
+            -(collisionPush.x * strip.mass),
+            -(collisionPush.y * strip.mass),
+        );
+
+        greenblob.acceleration.set(
+            -(collisionPush.x * strip.mass),
+            -(collisionPush.y * strip.mass),
+        );
+
+        purple.acceleration.set(
+            (collisionPush.x * strip.mass),
+            (collisionPush.y * strip.mass),
+        );
+
+        dblublob.acceleration.set(
+            (collisionPush.x * strip.mass),
+            (collisionPush.y * strip.mass),
+        );
+    }
+
+    yellow.x += yellow.acceleration.x * delta;
+    yellow.y += yellow.acceleration.y * delta;
+    
+    blue.x += blue.acceleration.x * delta;
+    blue.y += blue.acceleration.y * delta;
+    
+    pink.x += pink.acceleration.x * delta;
+    pink.y += pink.acceleration.y * delta;
+
+    orange.x += orange.acceleration.x * delta;
+    orange.y += orange.acceleration.y * delta;
+
+    greenblob.x += greenblob.acceleration.x * delta;
+    greenblob.y += greenblob.acceleration.y * delta;
+
+    redSquare.x += redSquare.acceleration.x * delta;
+    redSquare.y += redSquare.acceleration.y * delta;
+
+    
+    purple.x += purple.acceleration.x * delta;
+    purple.y += purple.acceleration.y * delta;
+
+    dblublob.x += dblublob.acceleration.x * delta;
+    dblublob.y += dblublob.acceleration.y * delta;
+
+    
+        }
+});
+
+// Add to stage
+
+    
+      
+
+      
+      
+      
+      
+    }
+    
+    const yellow = new PIXI.Sprite.from("yellowblob.png");
+    yellow.position.set(350, 675);
+    yellow.width = 50;
+    yellow.height = 50;
+
+    yellow.acceleration = new PIXI.Point(0);
+    yellow.mass = 1.3;
+    
+    const blue = new PIXI.Sprite.from("blueblob.png");
+    blue.position.set(325, 200);
+    blue.width = 75;
+    blue.height = 75;
+
+    blue.acceleration = new PIXI.Point(0);
+    blue.mass = 4.8;
+    
+    const pink = new PIXI.Sprite.from("pinkblob.png");
+    pink.position.set(375, 100);
+    pink.width = 100;
+    pink.height = 100;
+
+    pink.acceleration = new PIXI.Point(0);
+    pink.mass = 7;
+    
+
+
+
+
+    const orange = new PIXI.Sprite.from("orangeblob.png");
+    orange.position.set(340, 800);
+    orange.width = 50;
+    orange.height = 50;
+
+    orange.acceleration = new PIXI.Point(0);
+    orange.mass = 1.5;
+    
+    
+    
+    
+    
+    const purple = new PIXI.Sprite.from("purpleblob.png");
+    purple.position.set(380, 600);
+    purple.width = 100;
+    purple.height = 100;
+
+    purple.acceleration = new PIXI.Point(0);
+    purple.mass = 9;
+
+    const dblublob = new PIXI.Sprite.from("dblublob.png");
+    dblublob.position.set(300,500);
+    dblublob.width = 50;
+    dblublob.height = 50;
+
+    dblublob.acceleration = new PIXI.Point(0);
+    dblublob.mass = 2.8;
+
+    const greenblob = new PIXI.Sprite.from("greenblob.png");
+    greenblob.position.set(800,400);
+    greenblob.width = 75;
+    greenblob.height = 75;
+
+    greenblob.acceleration = new PIXI.Point(0);
+    greenblob.mass = 8;
+
+    const redSquare = new PIXI.Sprite.from("dgreeblob.png");
+        redSquare.position.set(300,300);
+      
+        
+        redSquare.width = 100;
+        redSquare.height = 100;
+        
+        redSquare.acceleration = new PIXI.Point(0);
+        redSquare.mass = 5.6;
+        
+        snakeContainer.addChild(pink);
+        snakeContainer.addChild(yellow);
+        snakeContainer.addChild(blue);
+        snakeContainer.addChild(orange);
+        snakeContainer.addChild(redSquare);
+        snakeContainer.addChild(greenblob);
+        snakeContainer.addChild(purple);
+        snakeContainer.addChild(dblublob);
+
+        
+    
+    
+    loader.once('complete', onAssetsLoaded);
+    loader.load();
+    
+    
+    /*////////////////////////////////////////*/
+    
+    var offsetX = 0.5,
+        _offsetX = 0.5,
+        offsetY = 0.5,
+        _offsetY = 0.5,
+        mouseX = 0, mouseY = 0;
+    
+    stage.interactive = true;
+    stage.on('mousemove',function(e){ 
+      mouseY = e.data.originalEvent.clientY;
+      mouseX = e.data.originalEvent.clientX;
+    });
+    
+    /*////////////////////////////////////////*/
+    
+    var count = 0;
+    
+    function ease(current,target,ease){ 
+      return current + (target - current) * ( ease || 0.2 );
+    }
+    
+    function animate() {
+      requestAnimationFrame(animate);
+    
+      count += 0.02;
+    
+      offsetY = mouseY / rendererT.height;
+      offsetX = mouseX / rendererT.width;
+      
+      _offsetY = ease(_offsetY, offsetY, 0.02);
+      _offsetX = ease(_offsetX, offsetX, 0.03);
+      
+    
+      for (var i = 0; i < points.length; i++) {
+        
+        //points[i].y = ease( points[i].y, (mouseY/i) + (renderer.height/2), 0.1 / (i+1));
+        //points[i].x = ease( points[i].x, (mouseX) + ((i+2) * ropeLength), 0.1 / (i+1));// + (i * ropeLength);
+        
+        
+        points[i].__y = ( points[i].__y !== undefined ? points[i].__y : points[i].y );
+        points[i].y = (rendererT.height/2) * (Math.sin(( _offsetY - 0.5)) * ((pointCount - i) * 0.1));
+        points[i].y += (Math.sin((i * 0.25) + count) * 20);
+    
+        points[i].__x = ( points[i].__x !== undefined ? points[i].__x : points[i].x );
+        points[i].x = points[i].__x + ((rendererT.width/2) * (( _offsetX - 0.15) * ((pointCount - i) * 0.1)));
+        points[i].x += (Math.sin((i * 0.5) + count) * 10);
+    
+        //points[i].x += Math.cos((i * 0.2) + count) * 5;
+      }
+      rendererBorder.render(stageBorder);
+      renderer.render(stage);
+       renderer1.render(stage1);
+       rendererL.render(stageL);
+       renderer2.render(stage2);
+       
+       rendererT.render(stageT);
+       rendererB.render(stageB);
+       rendererUploadScreen.render(UploadScreen);
+
+
+      
+      
+      
+    }
+    animate();
+
+            document.body.appendChild(rendererBorder.view)
+            document.body.appendChild(app.view)
+            
+            document.body.appendChild(renderer.view);
+
+            document.body.appendChild(renderer1.view);
+
+            document.body.appendChild(rendererL.view)
+
+            document.body.appendChild(renderer2.view)
+
+            
+
+            document.body.appendChild(rendererT.view)
+            document.body.appendChild(rendererB.view)
+            document.body.appendChild(rendererUploadScreen.view)
+            
+            
+
+            rendererBorder.view.style.position = 'absolute';rendererBorder.view.style.left = '50%';
+            rendererBorder.view.style.top = '50%';
+            rendererBorder.view.style.transform = 'translate3d( -50%, -50%, 0 )';
+
+            renderer.view.style.position = 'absolute';renderer.view.style.left = '50%';
+            renderer.view.style.top = '50%';
+            renderer.view.style.transform = 'translate3d( -50%, -50%, 0 )';
+
+            renderer1.view.style.position = 'absolute';renderer1.view.style.left = '50%';
+            renderer1.view.style.top = '50%';
+            renderer1.view.style.transform = 'translate3d( -50%, -50%, 0 )';
+
+            renderer2.view.style.position = 'absolute';renderer2.view.style.left = '50%';
+            renderer2.view.style.top = '50%';
+            renderer2.view.style.transform = 'translate3d( -50%, -50%, 0 )';
+
+            rendererL.view.style.position = 'absolute';rendererL.view.style.left = '50%';
+            rendererL.view.style.top = '50%';
+            rendererL.view.style.transform = 'translate3d( -50%, -50%, 0 )';
+
+            app.view.style.position = 'absolute';app.view.style.left = '50%';
+            app.view.style.top = '50%';
+            app.view.style.transform = 'translate3d( -50%, -50%, 0 )';
+
+            rendererB.view.style.position = 'absolute';rendererB.view.style.left = '50%';
+            rendererB.view.style.top = '50%';
+            rendererB.view.style.transform = 'translate3d( -50%, -50%, 0 )';
+
+            rendererT.view.style.position = 'absolute';rendererT.view.style.left = '50%';
+            rendererT.view.style.top = '50%';
+            rendererT.view.style.transform = 'translate3d( -50%, -50%, 0 )';
+
+
+
+
+
+
+            
+
+
+           
+
+            
+
+           
+        
+           
+             app.loader
+             .add("bg8", "spacebg.png")
+             .add("bg7", "08_eggplant.png")
+             .add("bg6", "07_magenta.png")
+             .add("bg5", "06_orange.png")
+             .add("bg4", "05_gold.png")
+             .add("bg3", "04_lime.png")
+             .add("bg2", "03_kelly.png")
+             .add("bg1", "02_turquoise.png")
+             .add("bg0", "01_cobalt.png")
+
+                
+             
+                
+                
+                
+                
+                
+                
+             app.loader.onComplete.add(initLevel);
+             app.loader.load();
+        
+    }
+
+    function gameLoop(delta) {
+        updateBg();
+        
+
+    }
+
+    function initLevel() {
+        bg8 = createBg(app.loader.resources["bg8"].texture);
+        bg3 = createBg(app.loader.resources["bg3"].texture);
+        bg6 = createBg(app.loader.resources["bg6"].texture);
+        bg4 = createBg(app.loader.resources["bg4"].texture);
+        bg5 = createBg(app.loader.resources["bg5"].texture);
+        bg7 = createBg(app.loader.resources["bg7"].texture);
+        bg0 = createBg(app.loader.resources["bg0"].texture);
+        bg1 = createBg(app.loader.resources["bg1"].texture);
+        bg2 = createBg(app.loader.resources["bg2"].texture);
+        
+        app.ticker.add(gameLoop);
+    }
+
+
+      
+ 
+
+
+        function createBg(texture) {
+            let tiling = new PIXI.TilingSprite(texture, 124200, 603);
+            tiling.position.set(0,0);
+            app.stage.addChild(tiling);
+
+            return tiling;
+        }
+
+        function updateBg() {
+            bgX = (bgX + bgSpeed);
+            
+            border.tilePosition.x = bgX * 2 ;
+            bg0.tilePosition.x = bgX * 2.75 ; 
+            bg1.tilePosition.x = bgX * 1.70;
+            bg2.tilePosition.x = bgX * 1.10;
+            bg3.tilePosition.x = bgX * 1.59;
+            bg4.tilePosition.x = bgX * 1.90;
+            bg5.tilePosition.x = bgX * 1.30;
+            bg6.tilePosition.x = bgX * 1.45;
+            bg7.tilePosition.y = bgX * 1.33;
+            bg0.tilePosition.y = bgX * 2.75 ; 
+            bg1.tilePosition.y = bgX * 1.70;
+            bg2.tilePosition.y = bgX * 1.10;
+            bg3.tilePosition.y = bgX * 1.59;
+            bg4.tilePosition.y = bgX * 1.90;
+            bg5.tilePosition.y = bgX * 1.30;
+            bg6.tilePosition.y = bgX * 1.45;
+            bg7.tilePosition.y = bgX * 1.33;
+            bg8.tilePosition.y = bgX * 3;
+            bg8.tilePosition.x = bgX * 3;
+        }
+        
+            
+    
+        </script>
+
+
+
+</head>
+<body>
+ 
+</body>
+</html>

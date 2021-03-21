@@ -1,0 +1,258 @@
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>    
+<script>
+    
+    let pb;
+    let Psheet = {};
+
+
+const app = new PIXI.Application();
+document.body.appendChild(app.view);
+var stage = PIXI.Container();
+
+// create a background...
+const background = PIXI.Sprite.from('spacebg.png');
+background.width = app.screen.width;
+background.height = app.screen.height;
+
+// add background to stage...
+app.stage.addChild(background);
+
+
+
+
+         let  Buttonsheet = new PIXI.BaseTexture.from("purplebutton_spritemap.png");
+         
+         let w = 400;
+         let h = 450;
+            
+         Psheet["blink1"] = [
+
+       
+
+
+           
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+            
+
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+
+        
+
+            
+        
+           
+           
+        ];
+
+        Psheet["click"] = [
+
+        new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(6 * w, 0, w, h)),
+        new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(6 * w, 0, w, h)),
+        new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(6 * w, 0, w, h)),
+        new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(6 * w, 0, w, h)),
+        new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(6 * w, 0, w, h)),
+        new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(6 * w, 0, w, h)),
+        new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(6 * w, 0, w, h)),
+
+
+
+
+        ];
+
+
+        Psheet["over"] = [
+
+        new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+            
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+            new PIXI.Texture( Buttonsheet, new PIXI.Rectangle(4 * w, 0, w, h)),
+
+
+
+
+
+];
+
+        
+
+    
+
+
+
+
+
+
+
+
+
+// create some textures from an image path
+
+let textureButton = new PIXI.AnimatedSprite(Psheet.blink1);
+textureButton.anchor.set(0.5);
+textureButton.animationspeed = 1.75;
+textureButton.loop = true;
+textureButton.x = 260;
+textureButton.y = 355;
+        
+         textureButton.play();
+         
+
+
+let textureButtonDown = new PIXI.AnimatedSprite(Psheet.click);
+textureButtonDown.anchor.set(0.5);
+textureButtonDown.animationspeed = 1.75;
+textureButtonDown.loop = false;
+textureButtonDown.x = 260;
+textureButtonDown.y = 355;
+      
+         textureButtonDown.play();
+       
+
+
+let textureButtonOver = new PIXI.AnimatedSprite(Psheet.over);
+textureButtonOver.anchor.set(0.5);
+textureButtonOver.animationspeed = 1.75;
+textureButtonOver.loop = true;
+textureButtonOver.x = 260;
+textureButtonOver.y = 355;
+      
+         textureButtonOver.play();
+  
+
+
+
+
+let buttons = [];
+
+let buttonPositions = [
+    175, 75,
+    655, 75,
+    410, 325,
+    150, 465,
+    685, 445,
+];
+
+for (let i = 0; i < 5; i++) {
+    let button = new PIXI.Sprite(textureButton);
+
+    button.anchor.set(0.5);
+    button.x = buttonPositions[i * 2];
+    button.y = buttonPositions[i * 2 + 1];
+
+    // make the button interactive...
+    button.interactive = true;
+    button.buttonMode = true;
+
+    button
+    // Mouse & touch events are normalized into
+    // the pointer* events for handling different
+    // button events.
+        .on('pointerdown', onButtonDown)
+        .on('pointerup', onButtonUp)
+        .on('pointerupoutside', onButtonUp)
+        .on('pointerover', onButtonOver)
+        .on('pointerout', onButtonOut);
+
+    // Use mouse-only events
+    // .on('mousedown', onButtonDown)
+    // .on('mouseup', onButtonUp)
+    // .on('mouseupoutside', onButtonUp)
+    // .on('mouseover', onButtonOver)
+    // .on('mouseout', onButtonOut)
+
+    // Use touch-only events
+    // .on('touchstart', onButtonDown)
+    // .on('touchend', onButtonUp)
+    // .on('touchendoutside', onButtonUp)
+
+    // add it to the stage
+    app.stage.addChild(button);
+
+    // add button to array
+    buttons.push(button);
+}
+
+// set some silly values...
+buttons[0].scale.set(1.2);
+buttons[2].rotation = Math.PI / 10;
+buttons[3].scale.set(0.8);
+buttons[4].scale.set(0.8, 1.2);
+buttons[4].rotation = Math.PI;
+
+function onButtonDown() {
+    this.isdown = true;
+    this.texture = textureButtonDown;
+    this.alpha = 1;
+}
+
+function onButtonUp() {
+    this.isdown = false;
+    if (this.isOver) {
+        this.texture = textureButtonOver;
+    } else {
+        this.texture = textureButton;
+    }
+}
+
+function onButtonOver() {
+    this.isOver = true;
+    if (this.isdown) {
+        return;
+    }
+    this.texture = textureButtonOver;
+}
+
+function onButtonOut() {
+    this.isOver = false;
+    if (this.isdown) {
+        return;
+    }
+    this.texture = textureButton;
+}
+
+
+</script>
+</body>
